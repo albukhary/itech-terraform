@@ -78,3 +78,22 @@ Please create and configure the below setup using Terraform.
 - Use terraform `locals` to pass variables
 - Store tfstate in S3 bucket. Create remote backend
 - Lock tfstate file. Prevent more than one person from changing the tfstate file at the same time
+
+
+Modular
+
+- VPC
+  - subnets
+- EC
+- Security Group
+==================
+
+- 3 Subnets
+- 
+In public, create EC2 bastion
+
+- 4 security group for each ec2 instance
+
+
+Add backend to main.tf file so that it is in s3
+Add DynamoDB to lock tfstate fiel

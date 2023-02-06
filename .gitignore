@@ -1,3 +1,7 @@
-env/dev/.terraform/
-env/dev/.terraform*
-env/dev/terraform.tfstate*
+Part1/env/dev/.terraform/
+Part1/env/dev/.terraform*
+Part1/env/dev/terraform.tfstate*
+
+Part2/.terraform/
+Part2/.terraform*
+Part2/terraform.tfstate*

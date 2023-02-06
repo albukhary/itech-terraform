@@ -1,3 +1,32 @@
+resource "aws_security_group" "SG-Bastion" {
+    vpc_id = aws_vpc.VPC.id
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        description = "Allow ping"
+        from_port = -1
+        to_port = -1
+        protocol = "ICMP"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        description = "Allow ssh from my computer"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+
+        # Allow ssh for my computer
+        cidr_blocks = ["213.230.74.74/32"]
+    }
+    tags = {
+      "Name" = "SG-Bastion"
+    }
+}
+
 resource "aws_security_group" "SG-Public" {
     vpc_id = aws_vpc.VPC.id
     egress {
@@ -7,13 +36,21 @@ resource "aws_security_group" "SG-Public" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
-        description = "Allow ssh traffic from anywhere"
+        description = "Allow ping"
+        from_port = -1
+        to_port = -1
+        protocol = "ICMP"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        description = "Allow ssh traffic from bastion"
         from_port = 22
         to_port = 22
         protocol = "tcp"
 
-        # TODO: Change it later to allow sh from private subnet only
-        cidr_blocks = ["0.0.0.0/0"]
+        # Allow ssh from Bastion only
+        security_groups = [ "${aws_security_group.SG-Bastion.id}" ]
     }
     ingress {
         description = "Allow HTTP traffic from anywhere"
@@ -25,5 +62,59 @@ resource "aws_security_group" "SG-Public" {
 
     tags = {
       "Name" = "SG-Public"
+    }
+}
+
+resource "aws_security_group" "SG-Private" {
+    vpc_id = aws_vpc.VPC.id
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        description = "Allow ping"
+        from_port = -1
+        to_port = -1
+        protocol = "ICMP"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        description = "Allow ssh traffic from Bastion"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+
+        # Allow ssh from Bastion only
+        security_groups = [ "${aws_security_group.SG-Bastion.id}" ]
+    }
+    tags = {
+      "Name" = "SG-Private"
+    }
+}
+
+resource "aws_security_group" "SG-Database" {
+    vpc_id = aws_vpc.VPC.id
+    ingress {
+        description = "Allow ping"
+        from_port = -1
+        to_port = -1
+        protocol = "ICMP"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        description = "Allow ssh traffic from Private Security Group"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+
+        # Allow ssh from Private security group only
+        security_groups = [ "${aws_security_group.SG-Private.id}" ]
+    }
+    tags = {
+      "Name" = "SG-Database"
     }
 }

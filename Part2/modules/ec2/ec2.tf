@@ -1,31 +1,29 @@
 resource "aws_instance" "Bastion" {
-    ami = "${lookup(var.AMI, var.AWS_REGION)}"
+    ami = var.AMI
     instance_type = "t2.micro"
     # VPC
-    subnet_id = "${aws_subnet.public.id}"
+    subnet_id = "${var.public_subnet_id}"
     # Security Group
-    vpc_security_group_ids = ["${aws_security_group.SG-Bastion.id}"]
+    vpc_security_group_ids = ["${var.bastion_sg_id}"]
     # the Public SSH key
     key_name = var.key-pair
-
     connection {
         user = "${var.EC2_USER}"
         private_key = "${file("${var.PRIVATE_KEY_PATH}")}"
         host = self.public_ip
     }
-
     tags = {
       "Name" = "Bastion"
     }
 }
 
 resource "aws_instance" "Public-ec2" {
-    ami = "${lookup(var.AMI, var.AWS_REGION)}"
+    ami = var.AMI
     instance_type = "t2.micro"
     # VPC
-    subnet_id = "${aws_subnet.public.id}"
+    subnet_id = "${var.public_subnet_id}"
     # Security Group
-    vpc_security_group_ids = ["${aws_security_group.SG-Public.id}"]
+    vpc_security_group_ids = ["${var.public_sg_id}"]
     # the Public SSH key
     key_name = var.key-pair
 
@@ -41,12 +39,12 @@ resource "aws_instance" "Public-ec2" {
 }
 
 resource "aws_instance" "Database" {
-    ami = "${lookup(var.AMI, var.AWS_REGION)}"
+    ami = var.AMI
     instance_type = "t2.micro"
     # VPC
-    subnet_id = "${aws_subnet.database.id}"
+    subnet_id = "${var.database_subnet_id}"
     # Security Group
-    vpc_security_group_ids = ["${aws_security_group.SG-Database.id}"]
+    vpc_security_group_ids = ["${var.database_sg_id}"]
     # the Public SSH key
     key_name = var.key-pair
 
@@ -61,12 +59,12 @@ resource "aws_instance" "Database" {
 }
 
 resource "aws_instance" "Private-ec2" {
-    ami = "${lookup(var.AMI, var.AWS_REGION)}"
+    ami = var.AMI
     instance_type = "t2.micro"
     # VPC
-    subnet_id = "${aws_subnet.private.id}"
+    subnet_id = "${var.private_subnet_id}"
     # Security Group
-    vpc_security_group_ids = ["${aws_security_group.SG-Private.id}"]
+    vpc_security_group_ids = ["${var.private_sg_id}"]
     # the Public SSH key
     key_name = var.key-pair
 

@@ -1,5 +1,5 @@
 resource "aws_security_group" "SG-Bastion" {
-    vpc_id = aws_vpc.VPC.id
+    vpc_id = var.vpc_id
     egress {
         from_port = 0
         to_port = 0
@@ -20,7 +20,7 @@ resource "aws_security_group" "SG-Bastion" {
         protocol = "tcp"
 
         # Allow ssh for my computer
-        cidr_blocks = ["213.230.74.74/32"]
+        cidr_blocks = ["${var.my_ip}"]
     }
     tags = {
       "Name" = "SG-Bastion"
@@ -28,7 +28,7 @@ resource "aws_security_group" "SG-Bastion" {
 }
 
 resource "aws_security_group" "SG-Public" {
-    vpc_id = aws_vpc.VPC.id
+    vpc_id = var.vpc_id
     egress {
         from_port = 0
         to_port = 0
@@ -66,7 +66,7 @@ resource "aws_security_group" "SG-Public" {
 }
 
 resource "aws_security_group" "SG-Private" {
-    vpc_id = aws_vpc.VPC.id
+    vpc_id = var.vpc_id
     egress {
         from_port = 0
         to_port = 0
@@ -96,7 +96,7 @@ resource "aws_security_group" "SG-Private" {
 }
 
 resource "aws_security_group" "SG-Database" {
-    vpc_id = aws_vpc.VPC.id
+    vpc_id = var.vpc_id
     ingress {
         description = "Allow ping"
         from_port = -1

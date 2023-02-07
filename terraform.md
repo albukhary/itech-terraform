@@ -1,5 +1,7 @@
 # Terraform 
 
+## Please kindly refer to folders for each task named Part1 and Part2
+
 ### Guideline. Part 1
 
 - Register AWS free account.

@@ -18,6 +18,11 @@ resource "aws_instance" "Bastion" {
         host        = "${self.public_ip}"
         script_path = "${var.script_path}"
       }
+      # inline = [
+      # "chmod +x /tmp/start_node.sh",
+      # "sudo sed -i -e 's/\r$//' /tmp/start_node.sh", # Remove the spurious CR characters.
+      # "sudo /tmp/start_node.sh",
+      # ]
     }
     connection {
         user = "${var.EC2_USER}"

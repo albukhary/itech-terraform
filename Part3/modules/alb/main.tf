@@ -46,7 +46,7 @@ resource "aws_lb" "front" {
   security_groups    = [var.sg_id]
   subnets            = var.subnet_ids
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "front"

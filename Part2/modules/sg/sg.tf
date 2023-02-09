@@ -4,14 +4,14 @@ resource "aws_security_group" "SG-Bastion" {
         from_port = 0
         to_port = 0
         protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
     ingress {
         description = "Allow ping"
         from_port = -1
         to_port = -1
         protocol = "ICMP"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
     ingress {
         description = "Allow ssh from my computer"
@@ -33,14 +33,14 @@ resource "aws_security_group" "SG-Public" {
         from_port = 0
         to_port = 0
         protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
     ingress {
         description = "Allow ping"
         from_port = -1
         to_port = -1
         protocol = "ICMP"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
 
     ingress {
@@ -50,14 +50,15 @@ resource "aws_security_group" "SG-Public" {
         protocol = "tcp"
 
         # Allow ssh from Bastion only
-        security_groups = [ "${aws_security_group.SG-Bastion.id}" ]
+        # security_groups = [ "${aws_security_group.SG-Bastion.id}" ]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
     ingress {
         description = "Allow HTTP traffic from anywhere"
         from_port = 80
         to_port = 80
         protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
 
     tags = {
@@ -71,14 +72,14 @@ resource "aws_security_group" "SG-Private" {
         from_port = 0
         to_port = 0
         protocol = -1
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
     ingress {
         description = "Allow ping"
         from_port = -1
         to_port = -1
         protocol = "ICMP"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
 
     ingress {
@@ -102,7 +103,7 @@ resource "aws_security_group" "SG-Database" {
         from_port = -1
         to_port = -1
         protocol = "ICMP"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = ["${var.ingress_cidr}"]
     }
 
     ingress {

@@ -15,11 +15,23 @@ variable "EC2_USER" {
     default = "ubuntu"
 }
 
-variable "PRIVATE_KEY_PATH" {
+variable "PRIVATE_KEY_SOURCE_PATH" {
     default = "~/.ssh/itech-aws.pem"
 }
 
+variable "PRIVATE_KEY_DESTINATION_PATH" {
+    default = "/home/ubuntu/.ssh/itech-aws.pem"
+}
+
+variable "script_path" {
+    default = "script.sh"
+}
+
 variable "public_subnet_id" {
+  
+}
+
+variable "instance_type" {
   
 }
 

@@ -2,6 +2,6 @@ Part1/env/dev/.terraform/
 Part1/env/dev/.terraform*
 Part1/env/dev/terraform.tfstate*
 
-Part2/.terraform/
-Part2/.terraform*
-Part2/terraform.tfstate*
+Part2/env/main/.terraform/
+Part2/env/main/.terraform*
+Part2/env/main/terraform.tfstate*

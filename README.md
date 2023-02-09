@@ -80,3 +80,21 @@ Please create and configure the below setup using Terraform.
 - Use terraform `locals` to pass variables
 - Store tfstate in S3 bucket. Create remote backend
 - Lock tfstate file. Prevent more than one person from changing the tfstate file at the same time
+
+
+
+### Imrovements
+
+- cidr block, availability zone
+- move main to another directory
+- sg keept its own tfstate file and gets VPC id from main tfstate file
+- first create VPC, then SG, and sg reads tfstate of VPC module and gets ID from there
+- use script to copy .pem file for each instance
+
+
+### Part3
+- ALB for public 2 ec2
+- add nginx, default html
+- http, https thourgh ALB
+
+First do with Console and them implement with TF
